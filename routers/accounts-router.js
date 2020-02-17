@@ -6,7 +6,7 @@ const router = express.Router();
 
 // get all accounts
 router.get('/', (req, res) => {
-    db.select('*').from('accounts')
+    db.select('*').from('accounts').limit(5).orderBy('budget', 'desc')
     .then(accounts => {
         res.status(200).json(accounts)
     })
