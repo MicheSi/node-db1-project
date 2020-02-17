@@ -46,6 +46,20 @@ router.post('/', (req, res) => {
 })
 
 // update account
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const updates = req.body;
+    db('accounts')
+    .where({id})
+    .update(updates)
+    .then(count => {
+        res.status(200).json(count);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: err.message})
+    })
+})
 
 // delete account
 
