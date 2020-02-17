@@ -19,8 +19,7 @@ router.get('/', (req, res) => {
 // get account by id
 router.get('/:id', (req, res) => {
     const id = req.params.id;
-    db('accounts').where({id})
-    .first()
+    getById(id)
     .then(account => {
         res.status(200).json(account)
     })
@@ -32,8 +31,29 @@ router.get('/:id', (req, res) => {
 
 // add new account
 
+router.post('/', (req, res) => {
+    const newAccount = req.body;
+    db('accounts').insert(newAccount, 'id')
+    .then(ids => {
+        return getById(ids[0]).then(added => {
+            res.status(201).json(added)
+        })
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: err.message})
+    })
+})
+
 // update account
 
 // delete account
 
 module.exports = router;
+
+function getById(id) {
+    return db('accounts')
+      .where({id})
+      .first();
+  }
+  
