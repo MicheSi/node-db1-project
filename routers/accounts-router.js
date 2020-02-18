@@ -1,12 +1,14 @@
 const express = require('express');
 
 const db = require('../data/dbConfig');
+const dbQuery = require('../data/queries');
 
 const router = express.Router();
 
 // get all accounts
 router.get('/', (req, res) => {
-    db.select('*').from('accounts')
+    const {limit, sortby, sortdir} = req.query;
+    dbQuery.getAll({limit, sortby, sortdir})
     // .limit(5).orderBy('budget', 'desc')
     .then(accounts => {
         res.status(200).json(accounts)
